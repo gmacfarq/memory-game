@@ -13,7 +13,7 @@ const colors = shuffle(COLORS);
 createCards(colors);
 
 let guesses = 0;
-let cardsMatched = 0;
+let score = 0;
 let firstCard;
 let secondCard;
 
@@ -57,18 +57,49 @@ function createCards(colors) {
 /** Flip a card face-up. */
 
 function flipCard(card) {
-  card.classList.add("flipped");
+  card.style.transform = "rotateY(180deg)";
+  card.style.backgroundColor = card.className;
 }
 
 /** Flip a card face-down. */
 
 function unFlipCard(card) {
-  // ... you need to write this ...
+  setTimeout(() =>{
+  card.style.transform = "rotateY(180deg)";
+  card.style.backgroundColor = "white";
+  }, 1000);
+
 }
 
 /** Handle clicking on a card: this could be first-card or second-card. */
 
 function handleCardClick(evt) {
   let clickedCard = evt.target;
+
+  if(clickedCard == firstCard){
+    return;
+  }
+
+  if(clickedCard != firstCard && firstCard == undefined){
+    flipCard(clickedCard);
+    firstCard = clickedCard;
+    return;
+  }
   flipCard(clickedCard);
+  secondCard = clickedCard;
+  if (secondCard.className == firstCard.className){
+    score += 1;
+    guesses += 1;
+    firstCard.removeEventListener("click", handleCardClick);
+    secondCard.removeEventListener("click", handleCardClick);
+  }
+  else{
+    guesses += 1;
+    unFlipCard(firstCard);
+    unFlipCard(secondCard);
+  }
+    firstCard = undefined;
+    secondCard = undefined;
+
 }
+
