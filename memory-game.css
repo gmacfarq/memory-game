@@ -1,5 +1,9 @@
 /* you can add to or change this. */
 
+html{
+  background-color: antiquewhite;
+}
+
 #game div {
   border: 1px solid black;
   width: 100px;
@@ -10,4 +14,8 @@
 
 .flipped {
   transform: rotateY(180deg);
+}
+
+.hidden {
+  display:none;
 }

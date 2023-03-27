@@ -8,15 +8,27 @@ const COLORS = [
   "red", "blue", "green", "orange", "purple",
 ];
 
-const colors = shuffle(COLORS);
+let guesses, score, holdBoardState, firstCard, secondCard;
 
-createCards(colors);
 
-let guesses = 0;
-let score = 0;
-let firstCard;
-let secondCard;
+function newGame() {
+  guesses = 0;
+  score = 0;
+  holdBoardState = false;
+  firstCard = undefined;
+  secondCard = undefined;
+  updateScore();
 
+  let gameBoard = document.getElementById("game");
+  let divs = gameBoard.querySelectorAll('div');
+  for (let div of divs) {
+    div.remove();
+  }
+  let colors = shuffle(COLORS);
+  createCards(colors);
+  document.getElementById("btn-start").className = "hidden";
+  document.getElementById("btn-reset").className = "hidden";
+}
 
 /** Shuffle array items in-place and return shuffled array. */
 
@@ -48,6 +60,7 @@ function createCards(colors) {
 
   for (let color of colors) {
     let card = document.createElement("div");
+    card.style.backgroundColor = "white";
     card.className = color;
     gameBoard.append(card);
     card.addEventListener("click", handleCardClick);
@@ -63,12 +76,20 @@ function flipCard(card) {
 
 /** Flip a card face-down. */
 
-function unFlipCard(card) {
-  setTimeout(() =>{
-  card.style.transform = "rotateY(180deg)";
-  card.style.backgroundColor = "white";
+function unFlipCard(cards) {
+  setTimeout(() => {
+    for (let card of cards) {
+      card.style.transform = "rotateY(180deg)";
+      card.style.backgroundColor = "white";
+    }
+    holdBoardState = false;
   }, 1000);
 
+}
+
+function updateScore() {
+  document.getElementById("score-counter").innerHTML = "Score: " + score;
+  document.getElementById("guesses-counter").innerHTML = "Guesses: " + guesses;
 }
 
 /** Handle clicking on a card: this could be first-card or second-card. */
@@ -76,30 +97,42 @@ function unFlipCard(card) {
 function handleCardClick(evt) {
   let clickedCard = evt.target;
 
-  if(clickedCard == firstCard){
+  if (holdBoardState) {
     return;
   }
 
-  if(clickedCard != firstCard && firstCard == undefined){
+  if (clickedCard == firstCard) {
+    return;
+  }
+
+  if (clickedCard != firstCard && firstCard == undefined) {
     flipCard(clickedCard);
     firstCard = clickedCard;
     return;
   }
   flipCard(clickedCard);
   secondCard = clickedCard;
-  if (secondCard.className == firstCard.className){
+  if (secondCard.className == firstCard.className) {
     score += 1;
     guesses += 1;
     firstCard.removeEventListener("click", handleCardClick);
     secondCard.removeEventListener("click", handleCardClick);
   }
-  else{
+  else {
+    holdBoardState = true;
     guesses += 1;
-    unFlipCard(firstCard);
-    unFlipCard(secondCard);
+    unFlipCard([firstCard, secondCard]);
   }
-    firstCard = undefined;
-    secondCard = undefined;
 
+  updateScore();
+  firstCard = undefined;
+  secondCard = undefined;
+
+  if (score == COLORS.length / 2) {
+    setTimeout(() => {
+      alert("you win!");
+      document.getElementById("btn-reset").className = "";
+    }, 1000);
+  }
 }
 
