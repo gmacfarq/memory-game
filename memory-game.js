@@ -8,7 +8,13 @@ const COLORS = [
   "red", "blue", "green", "orange", "purple",
 ];
 
+const CATS = [
+  "1", "2", "3", "4", "5", "6", "7", "8",
+  "1", "2", "3", "4", "5", "6", "7", "8",
+];
+
 let guesses, score, holdBoardState, firstCard, secondCard;
+
 
 
 function newGame() {
@@ -24,8 +30,8 @@ function newGame() {
   for (let div of divs) {
     div.remove();
   }
-  let colors = shuffle(COLORS);
-  createCards(colors);
+  let cats = shuffle(CATS);
+  createCards(cats);
   document.getElementById("btn-start").className = "hidden";
   document.getElementById("btn-reset").className = "hidden";
 }
@@ -55,13 +61,13 @@ function shuffle(items) {
  * - a click event listener for each card to handleCardClick
  */
 
-function createCards(colors) {
+function createCards(cats) {
   const gameBoard = document.getElementById("game");
 
-  for (let color of colors) {
+  for (let cat of cat) {
     let card = document.createElement("div");
     card.style.backgroundColor = "white";
-    card.className = color;
+    card.className = cat;
     gameBoard.append(card);
     card.addEventListener("click", handleCardClick);
   }
@@ -71,7 +77,7 @@ function createCards(colors) {
 
 function flipCard(card) {
   card.style.transform = "rotateY(180deg)";
-  card.style.backgroundColor = card.className;
+  card.style.backgroundImage = "url('cat-images/"+card.className+".jpg')"
 }
 
 /** Flip a card face-down. */
@@ -80,7 +86,7 @@ function unFlipCard(cards) {
   setTimeout(() => {
     for (let card of cards) {
       card.style.transform = "rotateY(180deg)";
-      card.style.backgroundColor = "white";
+      card.style.backgroundImage = "none";
     }
     holdBoardState = false;
   }, 1000);
@@ -128,7 +134,7 @@ function handleCardClick(evt) {
   firstCard = undefined;
   secondCard = undefined;
 
-  if (score == COLORS.length / 2) {
+  if (score == CATS.length / 2) {
     setTimeout(() => {
       alert("you win!");
       document.getElementById("btn-reset").className = "";
