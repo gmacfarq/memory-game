@@ -35,7 +35,7 @@ function newGame() {
   let cats = shuffle(CATS);
   createCards(cats);
   document.getElementById("btn-start").className = "hidden";
-  document.getElementById("btn-reset").className = "hidden";
+  document.getElementById("btn-reset").className = "";
 }
 
 /** Shuffle array items in-place and return shuffled array. */
