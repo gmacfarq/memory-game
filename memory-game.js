@@ -14,6 +14,8 @@ const CATS = [
 ];
 
 let guesses, score, holdBoardState, firstCard, secondCard;
+let record = 100;
+let recordUser;
 
 
 
@@ -64,7 +66,7 @@ function shuffle(items) {
 function createCards(cats) {
   const gameBoard = document.getElementById("game");
 
-  for (let cat of cat) {
+  for (let cat of cats) {
     let card = document.createElement("div");
     card.style.backgroundColor = "white";
     card.className = cat;
@@ -77,7 +79,7 @@ function createCards(cats) {
 
 function flipCard(card) {
   card.style.transform = "rotateY(180deg)";
-  card.style.backgroundImage = "url('cat-images/"+card.className+".jpg')"
+  card.style.backgroundImage = "url('cat-images/" + card.className + ".jpg')";
 }
 
 /** Flip a card face-down. */
@@ -89,13 +91,18 @@ function unFlipCard(cards) {
       card.style.backgroundImage = "none";
     }
     holdBoardState = false;
+    document.getElementById("btn-reset").className = "";
   }, 1000);
 
 }
 
 function updateScore() {
-  document.getElementById("score-counter").innerHTML = "Score: " + score;
   document.getElementById("guesses-counter").innerHTML = "Guesses: " + guesses;
+  if(recordUser != undefined){
+    document.getElementById("guesses-best").innerHTML = "Best Guesses: "
+    + record + " " + recordUser;
+  }
+
 }
 
 /** Handle clicking on a card: this could be first-card or second-card. */
@@ -136,7 +143,14 @@ function handleCardClick(evt) {
 
   if (score == CATS.length / 2) {
     setTimeout(() => {
-      alert("you win!");
+      if (guesses < record) {
+        let userName = prompt("High Score! Please enter your name");
+        record = guesses;
+        recordUser = userName;
+      }
+      else {
+        alert("you win!");
+      }
       document.getElementById("btn-reset").className = "";
     }, 1000);
   }

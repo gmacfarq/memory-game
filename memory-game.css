@@ -4,11 +4,21 @@ html{
   background-color: antiquewhite;
 }
 
+.counter {
+  font-size: 2em;
+}
+
+#game {
+  width:42.4em;
+  margin: auto;
+  padding:10px;
+}
+
 #game div {
   border: 1px solid black;
-  width: 100px;
-  height: 100px;
-  margin: 20px;
+  width: 10em;
+  height: 10em;
+  margin: .2em;
   display: inline-block;
   background-position: center;
   background-size: cover;

@@ -2,20 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <title>Memory Game!</title>
+  <title>Meowmory</title>
   <link rel="stylesheet" href="memory-game.css"/>
 </head>
 <body>
 
-<h1>Memory Game!</h1>
+<h1>Test your Meowmory!</h1>
 
-<h3 id = "score-counter">Score: 0</h3>
-<h3 id = "guesses-counter">Guesses: 0</h3>
+<p id = "guesses-counter" class="counter">Guesses: 0</p>
+<p id = "guesses-best" class="counter"></p>
 
 <button id = "btn-start"  onclick="newGame()">start</button>
 <button id = "btn-reset" class = "hidden" onclick="newGame()">reset</button>
+<div id="game-wrapper" class="flex-container">
+  <div id="game" class="flex-container"></div>
+</div>
 
-<div id="game"></div>
 
 <script src="memory-game.js"></script>
 
